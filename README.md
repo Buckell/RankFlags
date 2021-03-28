@@ -63,7 +63,7 @@ Removes the specified flags from the player.
 The following is an example of a DarkRP job that requires a certain flag in order to join it.
 
 ```lua
-TEAM_MEDIC = DarkRP.createJob("", {
+TEAM_MEDIC = DarkRP.createJob("Medic", {
     color = Color(255, 0, 0, 255),
     model = {"models/player/Group03m/male_07.mdl"},
     description = [[You are a medic; heal people and save the day!]],
