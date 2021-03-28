@@ -98,6 +98,18 @@ if SERVER then
         table.RemoveByValue(flags, flag)
         ply:SetRankFlags(ply, flags)
     end
+
+    function RankFlags.AssignPlayerFlags(ply, flags)
+        local pflags = ply:GetRankFlags()
+
+        for flag in flags do
+            if not table.HasValue(pflags, flag) then
+                table.insert(flags, flag)
+            end
+        end
+
+        ply:SetRankFlags(flags)
+    end
 else
     net.Receive("RankFlags.UpdateCache", function ()
         RankFlags.Cache = net.ReadTable()

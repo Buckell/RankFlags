@@ -24,16 +24,20 @@ AddCSLuaFile()
 local ply_meta = FindMetaTable("Player")
 
 if SERVER then
-    function ply_meta:SetRankFlags(flag)
-
+    function ply_meta:SetRankFlags(flags)
+        RankFlags.SetPlayerFlags(self, flag)
     end
 
     function ply_meta:AssignRankFlag(flag)
-
+        RankFlags.AssignPlayerFlag(self, flag)
     end
 
     function ply_meta:RemoveRankFlag(flag)
         RankFlags.RemovePlayerFlag(self, flag)
+    end
+
+    function ply_meta:AssignRankFlags(flags)
+        RankFlags.AssignPlayerFlags(self, flags)
     end
 end
 
