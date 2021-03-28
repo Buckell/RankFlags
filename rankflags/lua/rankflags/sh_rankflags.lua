@@ -109,10 +109,20 @@ if SERVER then
     function RankFlags.AssignPlayerFlags(ply, flags)
         local pflags = RankFlags.GetPlayerFlags(ply)
 
-        for flag in flags do
+        for _,flag in ipairs(flags) do
             if not table.HasValue(pflags, flag) then
                 table.insert(pflags, flag)
             end
+        end
+
+    	RankFlags.SetPlayerFlags(ply, pflags)
+    end
+  
+  	function RankFlags.RemovePlayerFlags(ply, flags)
+        local pflags = RankFlags.GetPlayerFlags(ply)
+
+        for _,flag in ipairs(flags) do
+      		table.RemoveByValue(pflags, flag)
         end
 
     	RankFlags.SetPlayerFlags(ply, pflags)
