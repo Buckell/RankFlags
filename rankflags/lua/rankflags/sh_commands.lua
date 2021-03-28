@@ -31,7 +31,7 @@ if RankFlags.Config.UseULX then
 
         local addrankflag_command = ulx.command("User Management", "ulx addrankflag", ulx.addrankflag, "!addrankflag")
         addrankflag_command:addParam{ type = ULib.cmds.PlayerArg, hint = "target" }
-        addrankflag_command:addParam{ type = ULib.cmds.StringArg, hint = "flag" }
+        addrankflag_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
         addrankflag_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
         addrankflag_command:help("Adds a rank flag to a user (Rank Flags).")
       
@@ -43,7 +43,7 @@ if RankFlags.Config.UseULX then
 
         local addrankflagid_command = ulx.command("User Management", "ulx addrankflagid", ulx.addrankflagid, "!addrankflagid")
         addrankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "target" }
-        addrankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "flag" }
+        addrankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
         addrankflagid_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
         addrankflagid_command:help("Adds a rank flag to a user (Rank Flags).")
 
@@ -55,7 +55,7 @@ if RankFlags.Config.UseULX then
 
         local removerankflag_command = ulx.command("User Management", "ulx removerankflag", ulx.removerankflag, "!removerankflag")
         removerankflag_command:addParam{ type = ULib.cmds.PlayerArg, hint = "target" }
-        removerankflag_command:addParam{ type = ULib.cmds.StringArg, hint = "flag" }
+        removerankflag_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
         removerankflag_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
         removerankflag_command:help("Removes a rank flag from a user (Rank Flags).")
 
@@ -67,7 +67,7 @@ if RankFlags.Config.UseULX then
 
         local removerankflagid_command = ulx.command("User Management", "ulx removerankflagid", ulx.removerankflagid, "!removerankflagid")
         removerankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "target" }
-        removerankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "flag" }
+        removerankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
         removerankflagid_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
         removerankflagid_command:help("Removes a rank flag from a user (Rank Flags).")
       
