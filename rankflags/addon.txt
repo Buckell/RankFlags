@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+    "name"         "Rank Flags"
+    "version"      "1"
+    "up_date"      "3/27/2021"
+    "author_name"  "Buckell"
+    "author_email" "max@altis.gg"
+    "author_url"   "https://altis.gg/"
+    "info"         "An addon for Garry's Mod allowing users to have multiple "usergroups." Useful for donation systems, extra permissions, and more."
+    "override"     "0"
+}
