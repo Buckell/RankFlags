@@ -23,7 +23,7 @@ AddCSLuaFile()
 
 RankFlags = {}
 
-include("sh_config.lua")
-include("sh_rankflag.lua")
-include("sh_player.lua")
-include("sh_commands.lua")
+include("rankflags/sh_config.lua")
+include("rankflags/sh_rankflags.lua")
+include("rankflags/sh_player.lua")
+include("rankflags/sh_commands.lua")

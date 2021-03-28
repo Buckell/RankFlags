@@ -24,15 +24,20 @@ AddCSLuaFile()
 RankFlags.Cache = {}
 
 function RankFlags.GetPlayerFlags(ply)
-    return RankFlags.Cache[ply:SteamID64()] or {}
+  	if not isstring(ply) then
+    	return RankFlags.Cache[ply:SteamID()] or {}
+    else
+    	local query = sql.QueryValue("SELECT flags FROM RankFlags WHERE id='" .. ply .. "'")
+    	return query and util.JSONToTable(query) or {}
+   	end
 end
 
 function RankFlags.PlayerHasFlag(ply, flag)
-    return table.HasValue(ply:GetRankFlags(), flag)
+    return table.HasValue(RankFlags.GetPlayerFlags(ply), flag)
 end
 
 function RankFlags.PlayerHasAllFlags(ply, flags)
-    local ply_flags = ply:GetRankFlags()
+    local ply_flags = RankFlags.GetPlayerFlags(ply)
 
     for _,flag in ipairs(flags) do
         if not table.HasValue(ply_flags, flag) then
@@ -44,7 +49,7 @@ function RankFlags.PlayerHasAllFlags(ply, flags)
 end
 
 function RankFlags.PlayerHasAnyFlags(ply, flags)
-    local ply_flags = ply:GetRankFlags()
+    local ply_flags = RankFlags.GetPlayerFlags(ply)
 
     for flag in flags do
         if table.HasValue(ply_flags, flag) then
@@ -57,16 +62,18 @@ end
 
 if SERVER then
     util.AddNetworkString("RankFlags.UpdateCache")
-
+  
     if not sql.TableExists("RankFlags") then
-        sql.Query("CREATE TABLE RankFlags (id BIGINT, flags TEXT)")
+        sql.Query("CREATE TABLE RankFlags (id TINYTEXT, flags TEXT)")
     end
 
     function RankFlags.RefreshCache()
-        local query = sql.Query("SELECT * FROM RankFlags")
+        local query = sql.Query("SELECT * FROM RankFlags") or {}
 
-        for row in query do
-            RankFlags.Cache[row["id"]] = util.JSONToTable()
+        for _, row in ipairs(query) do
+            if player.GetBySteamID(row["id"]) then
+                RankFlags.Cache[row["id"]] = util.JSONToTable(row["flags"])
+            end
         end
 
         net.Start("RankFlags.UpdateCache")
@@ -75,41 +82,47 @@ if SERVER then
     end
 
     function RankFlags.SetPlayerFlags(ply, flags)
-        if sql.QueryValue("SELECT * FROM RankFlags WHERE id='" .. ply:SteamID64() .. "'") then
-            sql.Query("UPDATE RankFlags SET flags='" .. SQLStr(util.TableToJSON(flags)) .. "' WHERE id='" .. ply:SteamID64() .. "'")
-        else
-            sql.Query("INSERT INTO RankFlags VALUES ('" .. ply:SteamID64() .. "', '" .. SQLStr(util.TableToJSON(flags)) .. "')")
-        end
+        if sql.QueryValue("SELECT * FROM RankFlags WHERE id='" .. (isstring(ply) and ply or ply:SteamID()) .. "'") then
+            sql.Query("UPDATE RankFlags SET flags=" .. SQLStr(util.TableToJSON(flags)) .. " WHERE id='" .. (isstring(ply) and ply or ply:SteamID()) .. "'")
+    	else
+            sql.Query("INSERT INTO RankFlags VALUES ('" .. (isstring(ply) and ply or ply:SteamID()) .. "', " .. SQLStr(util.TableToJSON(flags)) .. ")")
+    	end
 
         RankFlags.RefreshCache()
     end
 
     function RankFlags.AssignPlayerFlag(ply, flag)
-        local flags = ply:GetRankFlags()
+        local flags = RankFlags.GetPlayerFlags(ply)
 
         if not table.HasValue(flags, flag) then
             table.insert(flags, flag)
-            ply:SetRankFlags(flags)
+            RankFlags.SetPlayerFlags(ply, flags)
         end
     end
 
     function RankFlags.RemovePlayerFlag(ply, flag)
-        local flags = ply:GetRankFlags()
+        local flags = RankFlags.GetPlayerFlags(ply)
         table.RemoveByValue(flags, flag)
-        ply:SetRankFlags(ply, flags)
+    	RankFlags.SetPlayerFlags(ply, flags)
     end
 
     function RankFlags.AssignPlayerFlags(ply, flags)
-        local pflags = ply:GetRankFlags()
+        local pflags = RankFlags.GetPlayerFlags(ply)
 
         for flag in flags do
             if not table.HasValue(pflags, flag) then
-                table.insert(flags, flag)
+                table.insert(pflags, flag)
             end
         end
 
-        ply:SetRankFlags(flags)
+    	RankFlags.SetPlayerFlags(ply, pflags)
     end
+
+    hook.Add("PlayerInitialSpawn", "RankFlags.PlayerSpawn", function (ply, t)
+        RankFlags.RefreshCache()
+    end)
+  
+	RankFlags.RefreshCache()
 else
     net.Receive("RankFlags.UpdateCache", function ()
         RankFlags.Cache = net.ReadTable()

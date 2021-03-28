@@ -25,7 +25,7 @@ local ply_meta = FindMetaTable("Player")
 
 if SERVER then
     function ply_meta:SetRankFlags(flags)
-        RankFlags.SetPlayerFlags(self, flag)
+        RankFlags.SetPlayerFlags(self, flags)
     end
 
     function ply_meta:AssignRankFlag(flag)
@@ -46,7 +46,7 @@ function ply_meta:GetRankFlags()
 end
 
 function ply_meta:HasRankFlag(flag)
-    return RankFlags.PlayerHasRankFlag(self, flag)
+    return RankFlags.PlayerHasFlag(self, flag)
 end
 
 function ply_meta:HasAllRankFlags(flags)
