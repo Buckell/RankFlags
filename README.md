@@ -17,7 +17,7 @@ Adds a rank flag to the specified user.
 Removes a rank flag from the specified user.
 
 #### !listrankflags \<user\> \<flag\>
-Removes a rank flag from the specified user.
+Lists the specified user's rank flags.
 
 ## Integrating With Other Addons
 You'll need to do a little bit of work to use rank flags. Any "player" arguments can be replaced with a Steam ID. Be weary when using Steam IDs as they are not cached and require a database query; don't use them in "high performance" contexts. The following functions are the most useful:
