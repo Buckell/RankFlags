@@ -51,7 +51,7 @@ end
 function RankFlags.PlayerHasAnyFlags(ply, flags)
     local ply_flags = RankFlags.GetPlayerFlags(ply)
 
-    for flag in flags do
+    for _,flag in ipairs(flags) do
         if table.HasValue(ply_flags, flag) then
             return true
         end
