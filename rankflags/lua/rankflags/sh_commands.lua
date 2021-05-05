@@ -23,87 +23,87 @@ AddCSLuaFile()
 
 if RankFlags.Config.UseULX then
   	hook.Add("InitPostEntity", "RankFlags.ULX", function (ply)
-        function ulx.addrankflag(caller, target, flag)
-            target:AssignRankFlag(flag)
-            ulx.fancyLogAdmin(caller, "#A added rank flag #s to #T", flag, target)
-            return true
-        end
+		function ulx.addrankflag(caller, target, flag)
+		    target:AssignRankFlag(flag)
+		    ulx.fancyLogAdmin(caller, "#A added rank flag #s to #T", flag, target)
+		    return true
+		end
 
-        local addrankflag_command = ulx.command("User Management", "ulx addrankflag", ulx.addrankflag, "!addrankflag")
-        addrankflag_command:addParam{ type = ULib.cmds.PlayerArg, hint = "target" }
-        addrankflag_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
-        addrankflag_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
-        addrankflag_command:help("Adds a rank flag to a user (Rank Flags).")
-      
-        function ulx.addrankflagid(caller, targetid, flag)
-            RankFlags.AssignPlayerFlag(targetid, flag)
-            ulx.fancyLogAdmin(caller, "#A added rank flag #s to #s", flag, targetid)
-            return true
-        end
+		local addrankflag_command = ulx.command("User Management", "ulx addrankflag", ulx.addrankflag, "!addrankflag")
+		addrankflag_command:addParam{ type = ULib.cmds.PlayerArg, hint = "target" }
+		addrankflag_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
+		addrankflag_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
+		addrankflag_command:help("Adds a rank flag to a user (Rank Flags).")
 
-        local addrankflagid_command = ulx.command("User Management", "ulx addrankflagid", ulx.addrankflagid, "!addrankflagid")
-        addrankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "target" }
-        addrankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
-        addrankflagid_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
-        addrankflagid_command:help("Adds a rank flag to a user (Rank Flags).")
+		function ulx.addrankflagid(caller, targetid, flag)
+		    RankFlags.AssignPlayerFlag(targetid, flag)
+		    ulx.fancyLogAdmin(caller, "#A added rank flag #s to #s", flag, targetid)
+		    return true
+		end
 
-        function ulx.removerankflag(caller, target, flag)
-            target:RemoveRankFlag(flag)
-            ulx.fancyLogAdmin(caller, "#A removed rank flag #s from #T", flag, target)
-            return true
-        end
+		local addrankflagid_command = ulx.command("User Management", "ulx addrankflagid", ulx.addrankflagid, "!addrankflagid")
+		addrankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "target" }
+		addrankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
+		addrankflagid_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
+		addrankflagid_command:help("Adds a rank flag to a user (Rank Flags).")
 
-        local removerankflag_command = ulx.command("User Management", "ulx removerankflag", ulx.removerankflag, "!removerankflag")
-        removerankflag_command:addParam{ type = ULib.cmds.PlayerArg, hint = "target" }
-        removerankflag_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
-        removerankflag_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
-        removerankflag_command:help("Removes a rank flag from a user (Rank Flags).")
+		function ulx.removerankflag(caller, target, flag)
+		    target:RemoveRankFlag(flag)
+		    ulx.fancyLogAdmin(caller, "#A removed rank flag #s from #T", flag, target)
+		    return true
+		end
 
-        function ulx.removerankflagid(caller, targetid, flag)
-            RankFlags.RemovePlayerFlag(targetid, flag)
-            ulx.fancyLogAdmin(caller, "#A removed rank flag #s from #s", flag, targetid)
-            return true
-        end
+		local removerankflag_command = ulx.command("User Management", "ulx removerankflag", ulx.removerankflag, "!removerankflag")
+		removerankflag_command:addParam{ type = ULib.cmds.PlayerArg, hint = "target" }
+		removerankflag_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
+		removerankflag_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
+		removerankflag_command:help("Removes a rank flag from a user (Rank Flags).")
 
-        local removerankflagid_command = ulx.command("User Management", "ulx removerankflagid", ulx.removerankflagid, "!removerankflagid")
-        removerankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "target" }
-        removerankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
-        removerankflagid_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
-        removerankflagid_command:help("Removes a rank flag from a user (Rank Flags).")
-      
-        function ulx.listrankflags(caller, target)
-            local flags = target:GetRankFlags()
+		function ulx.removerankflagid(caller, targetid, flag)
+		    RankFlags.RemovePlayerFlag(targetid, flag)
+		    ulx.fancyLogAdmin(caller, "#A removed rank flag #s from #s", flag, targetid)
+		    return true
+		end
 
-            if table.Count(flags) == 0 then
-                ULib.tsay(ply, target:GetName() .. " has no rank flags.")
-            else
-                ULib.tsay(ply, target:GetName() .. "'s Flags: " .. table.concat(flags, ", "))
-            end
+		local removerankflagid_command = ulx.command("User Management", "ulx removerankflagid", ulx.removerankflagid, "!removerankflagid")
+		removerankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "target" }
+		removerankflagid_command:addParam{ type = ULib.cmds.StringArg, hint = "flag", ULib.cmds.takeRestOfLine }
+		removerankflagid_command:defaultAccess(ULib.ACCESS_SUPERADMIN)
+		removerankflagid_command:help("Removes a rank flag from a user (Rank Flags).")
 
-            return true
-        end
+		function ulx.listrankflags(caller, target)
+		    local flags = target:GetRankFlags()
 
-        local listrankflags_command = ulx.command("User Management", "ulx listrankflags", ulx.listrankflags, "!listrankflags")
-        listrankflags_command:addParam{ type = ULib.cmds.PlayerArg, hint = "target" }
-        listrankflags_command:defaultAccess(ULib.ACCESS_ALL)
-        listrankflags_command:help("Lists a user's rank flags (Rank Flags).")
-      
-        function ulx.listrankflagsid(caller, target)
-            local flags = RankFlags.GetPlayerFlags(target)
+		    if table.Count(flags) == 0 then
+			ULib.tsay(ply, target:GetName() .. " has no rank flags.")
+		    else
+			ULib.tsay(ply, target:GetName() .. "'s Flags: " .. table.concat(flags, ", "))
+		    end
 
-            if table.Count(flags) == 0 then
-                ULib.tsay(ply, target .. " has no rank flags.")
-            else
-                ULib.tsay(ply, target .. "'s Flags: " .. table.concat(flags, ", "))
-            end
+		    return true
+		end
 
-            return true
-        end
+		local listrankflags_command = ulx.command("User Management", "ulx listrankflags", ulx.listrankflags, "!listrankflags")
+		listrankflags_command:addParam{ type = ULib.cmds.PlayerArg, hint = "target" }
+		listrankflags_command:defaultAccess(ULib.ACCESS_ALL)
+		listrankflags_command:help("Lists a user's rank flags (Rank Flags).")
 
-        local listrankflagsid_command = ulx.command("User Management", "ulx listrankflagsid", ulx.listrankflagsid, "!listrankflagsid")
-        listrankflagsid_command:addParam{ type = ULib.cmds.StringArg, hint = "target" }
-        listrankflagsid_command:defaultAccess(ULib.ACCESS_ALL)
-        listrankflagsid_command:help("Lists a user's rank flags (Rank Flags).")
+		function ulx.listrankflagsid(caller, target)
+		    local flags = RankFlags.GetPlayerFlags(target)
+
+		    if table.Count(flags) == 0 then
+			ULib.tsay(ply, target .. " has no rank flags.")
+		    else
+			ULib.tsay(ply, target .. "'s Flags: " .. table.concat(flags, ", "))
+		    end
+
+		    return true
+		end
+
+		local listrankflagsid_command = ulx.command("User Management", "ulx listrankflagsid", ulx.listrankflagsid, "!listrankflagsid")
+		listrankflagsid_command:addParam{ type = ULib.cmds.StringArg, hint = "target" }
+		listrankflagsid_command:defaultAccess(ULib.ACCESS_ALL)
+		listrankflagsid_command:help("Lists a user's rank flags (Rank Flags).")
 	end)
 else
     if SERVER then
