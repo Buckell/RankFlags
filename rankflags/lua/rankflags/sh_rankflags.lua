@@ -24,12 +24,12 @@ AddCSLuaFile()
 RankFlags.Cache = {}
 
 function RankFlags.GetPlayerFlags(ply)
-  	if not isstring(ply) then
+    if not isstring(ply) then
     	return RankFlags.Cache[ply:SteamID()] or {}
     else
     	local query = sql.QueryValue("SELECT flags FROM RankFlags WHERE id='" .. ply .. "'")
     	return query and util.JSONToTable(query) or {}
-   	end
+    end
 end
 
 function RankFlags.PlayerHasFlag(ply, flag)
@@ -118,7 +118,7 @@ if SERVER then
     	RankFlags.SetPlayerFlags(ply, pflags)
     end
   
-  	function RankFlags.RemovePlayerFlags(ply, flags)
+    function RankFlags.RemovePlayerFlags(ply, flags)
         local pflags = RankFlags.GetPlayerFlags(ply)
 
         for _,flag in ipairs(flags) do
@@ -132,7 +132,7 @@ if SERVER then
         RankFlags.RefreshCache()
     end)
   
-	RankFlags.RefreshCache()
+    RankFlags.RefreshCache()
 else
     net.Receive("RankFlags.UpdateCache", function ()
         RankFlags.Cache = net.ReadTable()
