@@ -17,7 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-]]--
+]]
 
 AddCSLuaFile()
 
@@ -73,7 +73,7 @@ if SERVER then
         for _,v in ipairs(player.GetHumans()) do
             table.insert(steamid_array, v:SteamID())
         end
-        
+
         local query = sql.Query("SELECT * FROM RankFlags WHERE id IN ('" .. table.concat(steamid_array, "', '") .. "')") or {}
 
         for _, row in ipairs(query) do
@@ -86,12 +86,7 @@ if SERVER then
     end
 
     function RankFlags.SetPlayerFlags(ply, flags)
-        if sql.QueryValue("SELECT * FROM RankFlags WHERE id='" .. (isstring(ply) and ply or ply:SteamID()) .. "'") then
-            sql.Query("UPDATE RankFlags SET flags=" .. SQLStr(util.TableToJSON(flags)) .. " WHERE id='" .. (isstring(ply) and ply or ply:SteamID()) .. "'")
-    	else
-            sql.Query("INSERT INTO RankFlags VALUES ('" .. (isstring(ply) and ply or ply:SteamID()) .. "', " .. SQLStr(util.TableToJSON(flags)) .. ")")
-    	end
-
+        sql.Query("REPLACE INTO RankFlags VALUES ('" .. (isstring(ply) and ply or ply:SteamID()) .. "', " .. SQLStr(util.TableToJSON(flags)) .. ")")
         RankFlags.RefreshCache()
     end
 
