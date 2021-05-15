@@ -64,16 +64,20 @@ if SERVER then
     util.AddNetworkString("RankFlags.UpdateCache")
   
     if not sql.TableExists("RankFlags") then
-        sql.Query("CREATE TABLE RankFlags (id TINYTEXT, flags TEXT)")
+        sql.Query("CREATE TABLE RankFlags (id TINYTEXT PRIMARY KEY, flags TEXT)")
     end
 
     function RankFlags.RefreshCache()
-        local query = sql.Query("SELECT * FROM RankFlags") or {}
+        local steamid_array = {}
+        
+        for _,v in ipairs(player.GetHumans()) do
+            table.insert(steamid_array, v:SteamID())
+        end
+        
+        local query = sql.Query("SELECT * FROM RankFlags WHERE id IN ('" .. table.concat(steamid_array, "', '") .. "')") or {}
 
         for _, row in ipairs(query) do
-            if player.GetBySteamID(row["id"]) then
-                RankFlags.Cache[row["id"]] = util.JSONToTable(row["flags"])
-            end
+            RankFlags.Cache[row["id"]] = util.JSONToTable(row["flags"])
         end
 
         net.Start("RankFlags.UpdateCache")
